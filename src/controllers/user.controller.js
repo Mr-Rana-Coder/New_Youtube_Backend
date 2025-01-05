@@ -237,6 +237,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
     const { fullName, email } = req.body
+    console.log(fullName,email)
 
     if (!fullName || !email) {
         throw new ApiError(400, "All fields are required")
@@ -320,7 +321,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     const channel = await User.aggregate([
         {
             $match: {
-                username: userName?.toLowerCase() //check
+                userName: userName?.toLowerCase() //check
             }
         },
         {
@@ -357,64 +358,64 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
             }
         },
         {
-            $project:{
-                fullName:1,
-                userName:1, //check
-                subscribersCount:1,
-                channelSubscribedToCount:1,
-                isSubscribed:1,
-                avatar:1,
-                email:1,
-                coverImage:1
+            $project: {
+                fullName: 1,
+                userName: 1, //check
+                subscribersCount: 1,
+                channelSubscribedToCount: 1,
+                isSubscribed: 1,
+                avatar: 1,
+                email: 1,
+                coverImage: 1
 
             }
         }
 
     ])
-    if(!channel?.length){
-        throw new ApiError(404,"channel doesn't exist")
+    if (!channel?.length) {
+        throw new ApiError(404, "channel doesn't exist")
     }
 
     return res
-    .status(200)
-    .json(new ApiResponse(200,channel[0],"user channel fetched succesfully"))
+        .status(200)
+        .json(new ApiResponse(200, channel[0], "user channel fetched succesfully"))
 })
 
-const getWatchHistory = asyncHandler(async(req,res)=>{
+const getWatchHistory = asyncHandler(async (req, res) => {
     const user = await User.aggregate([
         {
-            $match:{
-                _id:new mongoose.Types.ObjectId(req.user._id)
+            $match: {
+                _id: new mongoose.Types.ObjectId(req.user._id)
             }
         },
         {
-            $lookup:{
-                from:"videos",
-                localField:"watchHistory",
-                foreignField:"_id",
-                as:"watchHistory",
-                pipeline:[
+            $lookup: {
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "watchHistory",
+                pipeline: [
                     {
-                        $lookup:{
-                            from:"users",
-                            localField:"owner",
-                            foreignField:"_id",
-                            as:"owner",
-                            pipeline:[
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
                                 {
-                                    $project:{
-                                        fullName:1,
-                                        userName:1, //check for the username
-                                        avatar:1
+                                    $project: {
+                                        fullName: 1,
+                                        userName: 1, //check for the username
+                                        avatar: 1
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        $addFields:{
-                            owner:{
-                                $first:"$owner"
+                        $addFields: {
+                            owner: {
+                                $first: "$owner"
                             }
                         }
                     }
@@ -423,8 +424,8 @@ const getWatchHistory = asyncHandler(async(req,res)=>{
         }
     ])
     return res
-    .status(200)
-    .json(new ApiResponse(200,user[0].watchHistory,"watch History Fetched Successfully"))
+        .status(200)
+        .json(new ApiResponse(200, user[0].watchHistory, "watch History Fetched Successfully"))
 })
 
 export {
