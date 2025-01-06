@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
     registerUser, loginUser, logoutUser, refereshAccessToken, updatePassword,
     getCurrentUser, updateAccountDetails, updateUserAvatar, updateUserCoverImage,
-    getUserChannelProfile, getWatchHistory
+    getUserChannelProfile, getWatchHistory,incrementVideoViews
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { jwtVerify } from "../middlewares/auth.middleware.js"
@@ -39,5 +39,7 @@ router.route("/update-coverImage").patch(jwtVerify, upload.single("coverImage"),
 router.route("/c/:userName/channel-profile").get(jwtVerify, getUserChannelProfile) // also check this
 
 router.route("/channel-watchHistory").get(jwtVerify, getWatchHistory)
+
+router.route("/watch-video/:videoId").get(jwtVerify,incrementVideoViews)
 
 export { router };                                  

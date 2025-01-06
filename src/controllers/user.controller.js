@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
+import {Video} from "../models/video.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
@@ -428,6 +429,29 @@ const getWatchHistory = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, user[0].watchHistory, "watch History Fetched Successfully"))
 })
 
+const incrementVideoViews = asyncHandler(async(req,res)=>{
+
+    const {videoId} = req.params
+    if(!videoId){
+        throw new ApiError(400,"Video Id is missing")
+    }
+
+    const video = await Video.findByIdAndUpdate(
+        videoId,
+        { $inc: { views: 1 } },  // Corrected syntax for increment
+        { new: true }
+    );
+    
+
+    if(!video){
+        throw new ApiError(404,"Video not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,video,"Video Views Updated successfully"))
+})
+
 export {
     registerUser,
     loginUser,
@@ -439,5 +463,6 @@ export {
     updateUserAvatar,
     updateUserCoverImage,
     getUserChannelProfile,
-    getWatchHistory
+    getWatchHistory,
+    incrementVideoViews
 };

@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs, { unlinkSync } from "fs";
+import fs from "fs";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -24,4 +24,21 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
-export { uploadOnCloudinary };
+const destroyFromCloudinary = async (publicId) => {
+    try {
+        if (!publicId) return console.log("Couldn't Get the publicId");
+        const response = await cloudinary.uploader.destroy(publicId, {
+            resource_type: "auto"
+        })
+        console.log("File deleted successfully from the cloudinary", response);
+        return response;
+    } catch (err) {
+        console.err("Unable to delete the file from the cloudinary",err)
+        return null;
+    }
+}
+
+export {
+    uploadOnCloudinary,
+    destroyFromCloudinary
+};

@@ -17,7 +17,11 @@ app.use(cookieParser());
 //Importing Routes
 import {router as userRouter} from "./routes/user.routes.js";
 import {router as subscriptionRouter} from "./routes/subscription.routes.js"
+import {router as videoRouter} from "./routes/video.routes.js"
+
 
 app.use("/api/v1/users",userRouter);
+app.use("/api/v1/subscription",subscriptionRouter);
+app.use("/api/v1/video",videoRouter);
 
 export { app }

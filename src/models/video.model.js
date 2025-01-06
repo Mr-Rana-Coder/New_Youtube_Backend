@@ -30,6 +30,12 @@ const videoSchema = new mongoose.Schema(
         owner: {
             type: Schema.Types.ObjectId,
             ref: "User",
+        },
+        videoPublicId:{
+            type:String
+        },
+        thumbnailPublicId:{
+            type:String
         }
 
     },
