@@ -31,11 +31,11 @@ const videoSchema = new mongoose.Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
         },
-        videoPublicId:{
-            type:String
+        videoPublicId: {
+            type: String
         },
-        thumbnailPublicId:{
-            type:String
+        thumbnailPublicId: {
+            type: String
         }
 
     },

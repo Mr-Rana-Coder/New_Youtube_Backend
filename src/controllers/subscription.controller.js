@@ -3,10 +3,23 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Subscription } from "../models/subscription.model.js";
 import { User } from "../models/user.model.js"
+import mongoose from "mongoose";
 
 const toggleSubscription = asyncHandler(async (req, res) => {
     const { channelId } = req.params
     const subscriberId = req.user?._id
+
+    if(!subscriberId){
+        throw new ApiError(400,"Subscriber is not authenticated")
+    }
+
+    if (!channelId) {
+        throw new ApiError(400, "Channel id is required")
+    }
+
+    if (!mongoose.isValidObjectId(channelId)) {
+        throw new ApiError(400, "Video id is invalid")
+    }
 
     const channel = await User.findById(channelId);
     if (!channel) {
@@ -40,27 +53,33 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Channel id is required")
     }
 
+    if (!mongoose.isValidObjectId(channelId)) {
+        throw new ApiError(400, "Video id is invalid")
+    }
+
     const channelSubscriber = await User.aggregate([
         {
-        $match: {
-            _id: new mongoose.Types.ObjectId(channelId)
+            $match: {
+                _id: new mongoose.Types.ObjectId(channelId)
+            }
+        }, {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
+        }, {
+            $project: {
+                subscribersCount: { $size: "$subscribers" }
+            }
         }
-    },{
-        $lookup: {
-            from: "subscriptions",
-            localField: "_id",
-            foreignField: "channel",
-            as: "subscribers"
-        }
-    },{
-        $project: {
-            subscribersCount: { $size: "$subscribers" }
-        }
-    }
     ])
 
     if (!channelSubscriber.length) {
-        throw new ApiError(404, "Channel Doesn't have any subscriber")
+       return res
+       .status(200)
+       .json(new ApiResponse(200,[],"Channel doesn't have any subscriber"))
     }
     return res
         .status(200)
@@ -75,30 +94,35 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
 const getSubscribedChannels = asyncHandler(async (req, res) => {
     const { subscriberId } = req.params
     if (!subscriberId) {
-        throw new ApiError(400, "Channel id is required")
+        throw new ApiError(400, "subscriber id is required")
     }
 
+    if (!mongoose.isValidObjectId(subscriberId)) {
+        throw new ApiError(400, "Subscriber id is invalid")
+    }
     const subscriberData = await User.aggregate([
         {
-        $match: {
-            _id: new mongoose.Types.ObjectId(subscriberId)
+            $match: {
+                _id: new mongoose.Types.ObjectId(subscriberId)
+            }
+        }, {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "subscriber",
+                as: "subscribedTo"
+            }
+        }, {
+            $project: {
+                channelsSubscribedToCount: { $size: "$subscribedTo" }
+            }
         }
-    },{
-        $lookup: {
-            from: "subscriptions",
-            localField: "_id",
-            foreignField: "subscriber",
-            as: "subscribedTo"
-        }
-    },{
-        $project: {
-            channelsSubscribedToCount: { $size: "$subscribedTo" }
-        }
-    }
     ])
 
     if (!subscriberData.length) {
-        throw new ApiError(404, "Subscriber does not exist or has no subscriptions")
+        return res
+        .status(200)
+        .json(new ApiResponse(200,[],"Subscriber doesn't have any channel"))
     }
     return res
         .status(200)
