@@ -18,10 +18,13 @@ app.use(cookieParser());
 import {router as userRouter} from "./routes/user.routes.js";
 import {router as subscriptionRouter} from "./routes/subscription.routes.js"
 import {router as videoRouter} from "./routes/video.routes.js"
-
+import {router as playlistRouter} from "./routes/playlist.routes.js"
+import {router as healthCheckRouter} from "./routes/healthCheck.routes.js"
 
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/subscription",subscriptionRouter);
 app.use("/api/v1/video",videoRouter);
+app.use("/api/v1/playlist",playlistRouter)
+app.use("/api/v1/healthCheck",healthCheckRouter)
 
 export { app }
