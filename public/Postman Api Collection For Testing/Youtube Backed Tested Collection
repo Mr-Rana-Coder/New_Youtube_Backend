@@ -1,0 +1,738 @@
+{
+	"info": {
+		"_postman_id": "74f31386-5646-4e81-9368-6dc72d77ce80",
+		"name": "Youtube Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40604068"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userName",
+									"value": "Sahil",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "ranasatisatish297@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "fullName",
+									"value": "Sahil Rana",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "coverImage",
+									"type": "file",
+									"src": "/C:/Users/ranas/Downloads/429d631659a11a9eb666b103d811470a.jpg"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/ranas/Downloads/microsoft_visual_studio_code_macos_bigsur_icon_189957.webp"
+								}
+							]
+						},
+						"url": "{{server}}/users/register"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"ranasatisatish297@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/login"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJpYXQiOjE3MzYwNTM5NzEsImV4cCI6MTczNjkxNzk3MX0.DYmqmrfJvOoq0ykmj2CW3LgbKh6NWW9KFSXu4UKElZk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJpYXQiOjE3MzYwNTM5NzEsImV4cCI6MTczNjkxNzk3MX0.DYmqmrfJvOoq0ykmj2CW3LgbKh6NWW9KFSXu4UKElZk\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/refresh-token"
+					},
+					"response": []
+				},
+				{
+					"name": "change-password",
+					"request": {
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"secret": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NDEyNywiZXhwIjoxNzM2MTQwNTI3fQ.2aynNfoZi8bxkGFpck68GDUU8fKkuqPRY01cL5c6W_M",
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"payload": "{}",
+								"addTokenTo": "header",
+								"headerPrefix": "Bearer",
+								"queryParamKey": "token",
+								"header": "{}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NDgyOCwiZXhwIjoxNzM2MTQxMjI4fQ.GeUBQeOzDKW2X93Ot4qgM6Y_4Au3Vt2yDovyz2PCntk",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NDgyOCwiZXhwIjoxNzM2MTQxMjI4fQ.GeUBQeOzDKW2X93Ot4qgM6Y_4Au3Vt2yDovyz2PCntk",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"12345678\",\r\n    \"newPassword\":\"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/change-password"
+					},
+					"response": []
+				},
+				{
+					"name": "current-user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NDgyOCwiZXhwIjoxNzM2MTQxMjI4fQ.GeUBQeOzDKW2X93Ot4qgM6Y_4Au3Vt2yDovyz2PCntk",
+								"type": "text"
+							}
+						],
+						"url": "{{server}}/users/current-user"
+					},
+					"response": []
+				},
+				{
+					"name": "update-account",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NTM4NywiZXhwIjoxNzM2MTQxNzg3fQ.ft1ySzhM6FAL2b4Jj_xfVEc0o_ytmTiGCbAnu3fO9BA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\":\"sahilll\",\r\n    \"email\":\"ranasatish297@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/update-account"
+					},
+					"response": []
+				},
+				{
+					"name": "/c/sahil/channel-profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NTM4NywiZXhwIjoxNzM2MTQxNzg3fQ.ft1ySzhM6FAL2b4Jj_xfVEc0o_ytmTiGCbAnu3fO9BA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/users/c/sahil/channel-profile",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								"c",
+								"sahil",
+								"channel-profile"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "sahil",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "channel-watchHistory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2F0aXNoMjk3QGdtYWlsLmNvbSIsInVzck5hbWUiOiJzYWhpbCIsImZ1bGxOYW1lIjoiU2FoaWwgUmFuYSIsImlhdCI6MTczNjA1NTM4NywiZXhwIjoxNzM2MTQxNzg3fQ.ft1ySzhM6FAL2b4Jj_xfVEc0o_ytmTiGCbAnu3fO9BA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "{{server}}/users/channel-watchHistory"
+					},
+					"response": []
+				},
+				{
+					"name": "Inncrement Views",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/users/watch-video/67837d963e260a64106b773e"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "subscription",
+			"item": [
+				{
+					"name": "ToggleSubscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgzNTRhYTRiZGE4NDNjZmMzY2MyMTMiLCJlbWFpbCI6InNhbWVlcjEyM0BnbWFpbC5jb20iLCJ1c3JOYW1lIjoic2FtZWVyIiwiZnVsbE5hbWUiOiJTYW1lZXIgQWhtYWQiLCJpYXQiOjE3MzY2NjAyMDUsImV4cCI6MTczNjc0NjYwNX0.Lvn2y73ry7aol8MW85NKv4cyP0Rk2JXhKmTx4ogV6Ko",
+								"description": "\"Sameer Authorization\"",
+								"type": "text"
+							}
+						],
+						"url": "{{server}}/subscription/c/6769113708a041ad97e58d81"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSubscribedChannels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgzNTRhYTRiZGE4NDNjZmMzY2MyMTMiLCJlbWFpbCI6InNhbWVlcjEyM0BnbWFpbC5jb20iLCJ1c3JOYW1lIjoic2FtZWVyIiwiZnVsbE5hbWUiOiJTYW1lZXIgQWhtYWQiLCJpYXQiOjE3MzY2NjAyMDUsImV4cCI6MTczNjc0NjYwNX0.Lvn2y73ry7aol8MW85NKv4cyP0Rk2JXhKmTx4ogV6Ko",
+								"type": "text"
+							}
+						],
+						"url": "{{server}}/subscription/c/678354aa4bda843cfc3cc213"
+					},
+					"response": []
+				},
+				{
+					"name": "GetChannelSubscriber",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2gyOTdAZ21haWwuY29tIiwidXNyTmFtZSI6InNhaGlsIiwiZnVsbE5hbWUiOiJzYWhpbGxsIiwiaWF0IjoxNzM2NjU4MzE2LCJleHAiOjE3MzY3NDQ3MTZ9.ldwB3bk3_ljGhI3DckPQac5xqoQXAEFmnd7zABKkYEA",
+								"type": "text"
+							}
+						],
+						"url": "{{server}}/subscription/c/6769113708a041ad97e58d81"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "video",
+			"item": [
+				{
+					"name": "Get All videos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkbCI6InJhbmFzYXRpc2gyOTdAZ21haWwuY29tIiwidXNyTmFtZSI6InNhaGlsIiwiZnVsbE5hbWUiOiJzYWhpbGxsIiwiaWF0IjoxNzM2NjU4MzE2LCJleHAiOjE3MzY3NDQ3MTZ9.ldwB3bk3_ljGhI3DckPQac5xqoQXAEFmnd7zABKk",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/video/?page=1&limit=10&sortBy=createdAt&sortType=desc",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"video",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "createdAt"
+								},
+								{
+									"key": "sortType",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish A video",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzY5MTEzNzA4YTA0MWFkOTdlNThkODEiLCJlbWFpbCI6InJhbmFzYXRpc2gyOTdAZ21haWwuY29tIiwidXNyTmFtZSI6InNhaGlsIiwiZnVsbE5hbWUiOiJzYWhpbGxsIiwiaWF0IjoxNzM2NjU4MzE2LCJleHAiOjE3MzY3NDQ3MTZ9.ldwB3bk3_ljGhI3DckPQac5xqoQXAEFmnd7zABKkYEA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "My first Video",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "trying to upload my first video",
+									"type": "text"
+								},
+								{
+									"key": "videoFile",
+									"type": "file",
+									"src": "/C:/Users/ranas/Downloads/7565438-hd_1080_1920_25fps.mp4"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/ranas/Downloads/WhatsApp Image 2024-07-02 at 3.55.56 PM.jpeg"
+								}
+							]
+						},
+						"url": "{{server}}/video/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get video By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/video/67837d533e260a64106b773b"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Publish Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{server}}/video/toggle/publish/67837d533e260a64106b773b"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Video",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Changed Name",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/ranas/Downloads/fitness-logo-design-vector-23742357.jpg"
+								}
+							]
+						},
+						"url": "{{server}}/video/67837d533e260a64106b773b"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteVideo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{server}}/video/67837d533e260a64106b773b"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Playlist",
+			"item": [
+				{
+					"name": "Create Playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "new 2nd playlist",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "random descriptiuon",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{server}}/playlist/create-playlist"
+					},
+					"response": []
+				},
+				{
+					"name": "get user playlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/playlist/user-playlist"
+					},
+					"response": []
+				},
+				{
+					"name": "Get playlist by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/playlist/c/6783be5ab228351b3a68f8d2"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Playlist",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Renamed Playlist",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{server}}/playlist/c/6783be5ab228351b3a68f8d2"
+					},
+					"response": []
+				},
+				{
+					"name": "Add video to Playlist",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{server}}/playlist/c/add/67837d963e260a64106b773e/6783be5ab228351b3a68f8d2"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove video from Playlist",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": "{{server}}/playlist/c/remove/67837d963e260a64106b773e/6783be5ab228351b3a68f8d2"
+					},
+					"response": []
+				},
+				{
+					"name": "Playlist Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{server}}/playlist/c/6783be5ab228351b3a68f8d2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthCheck",
+			"item": [
+				{
+					"name": "HealthCheck",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/healthCheck/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tweet",
+			"item": [
+				{
+					"name": "Create Tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"Hey this is my first tweet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/tweet/"
+					},
+					"response": []
+				},
+				{
+					"name": "Get tweet by userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/tweet/user/6769113708a041ad97e58d81"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tweet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"updated content of this tweet\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/tweet/6783c69ac644a6e0c191d807"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tweet",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"Update Content\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/tweet/6783c69ac644a6e0c191d807"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Add Comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "content",
+									"value": "This is a not a nice video",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{server}}/comment/67837d963e260a64106b773e"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\":\"No this is a nice video\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/comment/c/6783cba79f7c761d74ea54a1"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/comment/67837d963e260a64106b773e"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{server}}/comment/c/6783c958c644a6e0c191d820"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Like",
+			"item": [
+				{
+					"name": "Like Video",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/like/toggle/v/67837d963e260a64106b773e"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Comment ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/like/toggle/c/6783cba79f7c761d74ea54a1"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/like/toggle/t/6783d1a7a9edeb307a6cf298"
+					},
+					"response": []
+				},
+				{
+					"name": "Get liked Videos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/like/videos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Dashboard Videos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/dashboard/videos"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
