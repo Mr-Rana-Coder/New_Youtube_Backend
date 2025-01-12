@@ -14,19 +14,11 @@ const getVideoComments = asyncHandler(async (req, res) => {
     }
     const { page = 1, limit = 10 } = req.query
 
-    if (page <= 0) {
-        throw new ApiError(400, "Page must be greater than 0")
-    }
-    if (limit<=0) {
-        throw new ApiError(400, "limit must be greater than 0")
-    }
-
     const pageInt = parseInt(page, 10)
     const limitInt = parseInt(limit, 10)
-
     const skip = (pageInt - 1) * limitInt
 
-    const allComments = await Comment.find({ videos: videoId })
+    const allComments = await Comment.find({ video: videoId })
         .skip(skip)
         .limit(limit)
         .sort({createdAt:-1})
@@ -59,7 +51,7 @@ const addComment = asyncHandler(async (req, res) => {
 
     const newComment = await Comment.create({
         content: content,
-        videos: videoId,
+        video: videoId,
         owner: req.user?._id
     })
     if (!newComment) {

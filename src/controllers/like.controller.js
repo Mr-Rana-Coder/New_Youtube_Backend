@@ -135,7 +135,9 @@ const getLikedVideos = asyncHandler(async (req, res) => {
         throw new ApiError(400,"User id is invalid")
     }
 
-    const likedVideos = await Like.find({likedBy:userId}).select("video")
+    const likedVideos = await Like.find({ likedBy: userId, video: { $exists: true, $ne: null } })
+    .select("video")//$ne : checks field is not null 
+
     if(!likedVideos||likedVideos.length === 0){
         return res
         .status(200)

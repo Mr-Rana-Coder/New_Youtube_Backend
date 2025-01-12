@@ -1,16 +1,26 @@
-import { uploadOnCloudinary, destroyFromCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary,destroyFromCloudinaryForImage,destroyFromCloudinaryForVideo } from "../utils/cloudinary.js";
 import { Video } from "../models/video.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
-import mongoose, {isValidObjectId} from "mongoose"
+import mongoose from "mongoose"
 
 const getAllVideos = asyncHandler(async (req, res) => {
 
-    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
+    const { page = 1, limit = 10, sortBy, sortType } = req.query
 
-    if (!sortBy || !sortType || !userId) {
-        throw new ApiError(400, "sortBy, sortType, and userId are Required")
+    const userId = req.user?._id
+
+    if (!userId) {
+        throw new ApiError(400, "User is not authenticated")
+    }
+
+    if (!mongoose.isValidObjectId(userId)) {
+        throw new ApiError(400, "Invalid user ID")
+    }
+
+    if (!sortBy || !sortType) {
+        throw new ApiError(400, "sortBy and sortType are Required")
     }
 
     const pageInt = parseInt(page, 10);
@@ -21,7 +31,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
         {
             $match: {
                 isPublished: true,
-                ...(userId ? { owner: new mongoose.Types.ObjectId(userId) } : {})
+                owner: userId
             }
         },
         {
@@ -33,9 +43,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
             $skip: (pageInt - 1) * limitInt,
         },
         {
-            $limit: {
-                limitInt
-            }
+            $limit: limitInt
         },
         {
             $project: {
@@ -50,12 +58,12 @@ const getAllVideos = asyncHandler(async (req, res) => {
     }
 
     const totalVideos = await Video.countDocuments({
-        ...(userId && { owner: new mongoose.Types.ObjectId(userId) }),
+        owner: userId,
         isPublished: true,
     });
 
-    if (totalVideos === 0) {
-        throw new ApiError(400, "No videos Found ")
+    if (!totalVideos) {
+        throw new ApiError(404, "No videos Found ")
     }
 
     return res
@@ -69,12 +77,16 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description } = req.body
+    const userId = req.user?._id
+    if(!userId){
+        throw new ApiError(400,"Unauthorized request")
+    }
     if (!title || !description) {
         throw new ApiError(400, "Title and Description are required")
     }
 
     const videoFilePath = req.files?.videoFile[0].path;
-    const videoThumbnailPath = req.files?.videoThumbnail[0].path;
+    const videoThumbnailPath = req.files?.thumbnail[0].path;
 
     if (!videoFilePath) {
         throw new ApiError(400, "Unable to get Video File")
@@ -97,7 +109,8 @@ const publishAVideo = asyncHandler(async (req, res) => {
         thumbnail: videoThumbnail.url,
         duration: video.duration,
         videoPublicId: video.public_id,
-        thumbnailPublicId: videoThumbnail.public_id
+        thumbnailPublicId: videoThumbnail.public_id,
+        owner:userId
     })
 
     if (!uploadedVideo) {
@@ -115,8 +128,8 @@ const getVideoById = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Video Id is required")
     }
 
-    if(!mongoose.isValidObjectId(videoId)){
-        throw new ApiError(400,"Video id is invalid")
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new ApiError(400, "Video id is invalid")
     }
 
     const video = await Video.findById(videoId).select("-videoPublicId -thumbnailPublicId");
@@ -134,9 +147,9 @@ const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params
     const { title, description } = req.body
 
-    
-    if(!mongoose.isValidObjectId(videoId)){
-        throw new ApiError(400,"Video id is invalid")
+
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new ApiError(400, "Video id is invalid")
     }
 
     let updateData = {};
@@ -175,18 +188,18 @@ const deleteVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "videoID is Requried")
     }
 
-    if(!mongoose.isValidObjectId(videoId)){
-        throw new ApiError(400,"Video id is invalid")
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new ApiError(400, "Video id is invalid")
     }
 
-    const video = await Video.findById(videoId);
+    const video = await Video.findById(videoId)
 
     if (!video) {
         throw new ApiError(400, "Unable to find the video");
     }
 
-    const videoFileDeletion = await destroyFromCloudinary(video.videoPublicId)
-    const videoThumbnailDeletion = await destroyFromCloudinary(video.thumbnailPublicId)
+    const videoFileDeletion = await destroyFromCloudinaryForVideo(video.videoPublicId)
+    const videoThumbnailDeletion = await destroyFromCloudinaryForImage(video.thumbnailPublicId)
 
     if (!videoFileDeletion || !videoThumbnailDeletion) {
         throw new ApiError(400, "Unable to delete files from cloundinary")
@@ -209,8 +222,8 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Video Id is required")
     }
 
-    if(!mongoose.isValidObjectId(videoId)){
-        throw new ApiError(400,"Video id is invalid")
+    if (!mongoose.isValidObjectId(videoId)) {
+        throw new ApiError(400, "Video id is invalid")
     }
 
     const video = await Video.findById(videoId)

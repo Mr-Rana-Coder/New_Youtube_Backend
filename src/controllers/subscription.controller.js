@@ -54,7 +54,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     }
 
     if (!mongoose.isValidObjectId(channelId)) {
-        throw new ApiError(400, "Video id is invalid")
+        throw new ApiError(400, "Channel id is invalid")
     }
 
     const channelSubscriber = await User.aggregate([
@@ -129,7 +129,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(200, {
                 subscriberId,
-                channelsSubscribedToCount: subscribedData[0].channelsSubscribedToCount
+                channelsSubscribedToCount: subscriberData[0].channelsSubscribedToCount
             }, "Subscribed Channel fetched successfully")
         )
 })

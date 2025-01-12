@@ -2,11 +2,12 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Playlist } from "../models/playlist.model.js";
-import mongoose, { isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
 
 const createPlaylist = asyncHandler(async (req, res) => {
-    const { name, description } = req.body;
-
+    const { name, description } = req.body
+    console.log("Name:",name)
+    console.log("description:",description)
     if (!name || !description) {
         throw new ApiError(400, "All fields are required")
     }
@@ -33,9 +34,10 @@ const createPlaylist = asyncHandler(async (req, res) => {
 })
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
-    const { userId } = req.params
+    const userId = req.user?._id
+    console.log(userId)
     if (!userId) {
-        throw new ApiError(400, "userId is required")
+        throw new ApiError(400, "user is not authenticated")
     }
 
     if (!mongoose.isValidObjectId(userId)) {
@@ -81,7 +83,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "playlist and Video Id's are required")
     }
 
-    if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(userId)) {
+    if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(playlistId)) {
         throw new ApiError(400, "either playlist id or user id is incorrect")
     }
 
@@ -103,7 +105,7 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "playlist and Video Id's are required")
     }
 
-    if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(userId)) {
+    if (!mongoose.isValidObjectId(playlistId) || !mongoose.isValidObjectId(playlistId)) {
         throw new ApiError(400, "either playlist id or user id is incorrect")
     }
 
@@ -159,7 +161,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "At least one field should be updated")
     }
 
-    const playlist = await findByIdAndUpdate(playlistId, updatesForPlaylist, { new: true })
+    const playlist = await Playlist.findByIdAndUpdate(playlistId, updatesForPlaylist, { new: true })
 
     if (!playlist) {
         throw new ApiError(404, "Playlist not found!")

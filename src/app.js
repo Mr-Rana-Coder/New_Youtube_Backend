@@ -25,14 +25,14 @@ import {router as likeRouter} from "./routes/like.route.js";
 import {router as commentRouter} from "./routes/comment.route.js";
 import {router as dashboardRouter} from "./routes/dashboard.route.js"
 
-app.use("/api/v1/users",userRouter);
-app.use("/api/v1/subscription",subscriptionRouter);
-app.use("/api/v1/video",videoRouter);
-app.use("/api/v1/playlist",playlistRouter)
-app.use("/api/v1/healthCheck",healthCheckRouter)
-app.use("/api/v1/tweet",tweetRouter)
-app.use("/api/v1/like",likeRouter)
-app.use("/api/v1/comment",commentRouter)
+app.use("/api/v1/users",userRouter);//Checked
+app.use("/api/v1/subscription",subscriptionRouter);//checked
+app.use("/api/v1/video",videoRouter);//checked
+app.use("/api/v1/playlist",playlistRouter)//checked
+app.use("/api/v1/healthCheck",healthCheckRouter)//checked
+app.use("/api/v1/tweet",tweetRouter)//checked
+app.use("/api/v1/like",likeRouter)//checked
+app.use("/api/v1/comment",commentRouter)//checked
 app.use("/api/v1/dashboard",dashboardRouter)
 
 export { app }

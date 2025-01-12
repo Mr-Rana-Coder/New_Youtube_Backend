@@ -40,6 +40,6 @@ router.route("/c/:userName/channel-profile").get(jwtVerify, getUserChannelProfil
 
 router.route("/channel-watchHistory").get(jwtVerify, getWatchHistory)
 
-router.route("/watch-video/:videoId").get(jwtVerify,incrementVideoViews)
+router.route("/watch-video/:videoId").post(jwtVerify,incrementVideoViews)
 
 export { router };                                  

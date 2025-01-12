@@ -11,10 +11,12 @@ import {
 } from "../controllers/video.controller.js";
 
 const router = Router();
+
 router.use(jwtVerify);
+
 router
     .route("/")
-    .get(getAllVideos)
+    .get(getAllVideos)//sort type and sortBy are also required in the query
     .post(
         upload.fields([
             {

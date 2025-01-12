@@ -13,7 +13,7 @@ const createTweet = asyncHandler(async (req, res) => {
 
     const userId = req.user?._id
 
-    if (!user) {
+    if (!userId) {
         throw new ApiError(400, "User is not authenticated")
     }
 
